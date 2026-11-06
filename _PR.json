@@ -1,0 +1,29 @@
+{
+ "number": 1,
+ "owner": "M1",
+ "branch": "chore/repo-scaffold",
+ "title": "Set up the repository",
+ "groups": [
+  {
+   "message": "docs: add project README",
+   "files": [
+    "README.txt"
+   ]
+  },
+  {
+   "message": "chore: add .gitignore",
+   "files": [
+    ".gitignore"
+   ]
+  },
+  {
+   "message": "chore: add campus images",
+   "files": [
+    "images/hero_innovation_week.jpg",
+    "images/news_ai_research_lab.jpg",
+    "images/news_career_fair.jpg",
+    "images/news_cricket_tournament.jpg"
+   ]
+  }
+ ]
+}
