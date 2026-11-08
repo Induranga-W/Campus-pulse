@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NSBM NewsDesk — Campus Pulse | NSBM Green University</title>
+  <meta name="description" content="Central university campus news, real-time Campus Pulse activities, academic timetables, and student information management platform for NSBM Green University, Sri Lanka." />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Newsreader -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Modular CSS Files -->
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/header.css" />
+  <link rel="stylesheet" href="./css/footer.css" />
+</head>
+<body>
+
+  <!-- Main Navigation Bar (Clean: Academic Banner Removed, Admin Button Accessed Exclusively via Profile Dropdown) -->
+  <header class="main-nav-header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <!-- Brand Wordmark -->
+        <a href="./index.html" class="brand-link">
+          <div class="brand-logo-icon">N</div>
+          <div class="brand-text">
+            <span class="brand-title">NSBM NewsDesk</span>
+            <span class="brand-sub">Campus Pulse</span>
+          </div>
+        </a>
+
+        <!-- 4 Primary Navigation Links in Exact Order -->
+        <ul class="nav-menu">
+          <li><a href="./index.html" class="nav-item-link active">Home</a></li>
+          <li><a href="./pulse.html" class="nav-item-link">Campus Pulse</a></li>
+          <li><a href="./news.html" class="nav-item-link">Latest News</a></li>
+          <li><a href="./submit.html" class="nav-item-link">Submit</a></li>
+        </ul>
+
+        <!-- Nav Actions: Search & Profile Dropdown -->
+        <div class="nav-actions">
+          <a href="./news.html" class="icon-btn" title="Search Campus News">
+            <span>🔍</span>
+            <span>Search</span>
+          </a>
+
+          <!-- Profile Badge with Account Dropdown -->
+          <div class="user-profile-wrapper">
+            <div class="user-profile-badge" id="userProfileBadgeBtn" title="Account Menu">
+              <img id="navUserBadgeAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150" alt="Student" class="user-avatar-mini" />
+              <span id="navUserBadgeName">Kasun Perera</span>
+              <span class="dropdown-caret">▼</span>
+            </div>
+
+            <!-- Profile Dropdown Menu (Strict Role-Based: Shows Admin Dashboard link only for ADMIN) -->
+            <div class="profile-dropdown-menu" id="profileDropdownMenu">
+              <!-- Rendered dynamically by js/auth.js -->
+            </div>
+          </div>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button class="icon-btn hamburger-toggle" id="hamburgerToggle" aria-label="Toggle Navigation Menu">
+            ☰
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+      <a href="./index.html" class="active">Home</a>
+      <a href="./pulse.html">Campus Pulse</a>
+      <a href="./news.html">Latest News</a>
+      <a href="./submit.html">Submit</a>
+      <a href="./profile.html">My Profile</a>
+      <a href="./bookmarks.html">My Bookmarks</a>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- HOME VIEW CONTENT -->
+  <!-- ========================================================= -->
+  <main class="page-view">
+    <div class="container">
+
+      <!-- Greeting Header -->
+      <div class="greeting-header">
+        <div>
+          <h1 class="greeting-title">Good morning, <span id="greetingUserName">Kasun</span> 👋</h1>
+          <p class="greeting-sub">Everything happening across NSBM Green University today.</p>
+        </div>
+        <div class="campus-weather-pill">
+          <span>☀️</span>
+          <span>Homagama · 28°C Sunny</span>
+          <span>·</span>
+          <strong>Batch 26.1 IFSL</strong>
+        </div>
+      </div>
+
+      <!-- 2 Side-by-Side Sections (Desktop) / Stacked (Mobile) -->
+      <section class="home-top-grid">
+        <!-- Left: Important News -->
+        <div class="feature-box">
+          <div class="feature-box-header">
+            <div class="feature-box-title">
+              <span class="icon-tag">📌</span>
+              <span>Important News</span>
+            </div>
+            <a href="./news.html" class="view-all-link">
+              <span>All News</span>
+              <span>→</span>
+            </a>
+          </div>
+          <div id="importantNewsContent">
+            <!-- Rendered dynamically by js/main.js -->
+          </div>
+        </div>
+
+        <!-- Right: Campus Pulse Preview -->
+        <div class="feature-box">
+          <div class="feature-box-header">
+            <div class="feature-box-title">
+              <span class="icon-tag">📡</span>
+              <span>Campus Pulse</span>
+            </div>
+            <a href="./pulse.html" class="view-all-link">
+              <span>View Full Pulse</span>
+              <span>→</span>
+            </a>
+          </div>
+          <div id="campusPulsePreviewContent">
+            <!-- Rendered dynamically by js/main.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Don't Miss Carousel Section -->
+      <section class="dont-miss-banner" id="dontMissBanner" tabindex="0" aria-label="Don't Miss announcements carousel">
+        <div class="dont-miss-banner-inner">
+          <div class="dont-miss-left">
+            <span class="dont-miss-tag">⚡ Don't Miss</span>
+            <span class="urgency-badge" id="dontMissUrgencyTag">Priority</span>
+          </div>
+
+          <div class="dont-miss-middle" id="dontMissMiddle">
+            <div class="dont-miss-headline">Loading priority campus deadline...</div>
+            <div class="dont-miss-desc">Please check back in a moment.</div>
+          </div>
+
+          <div class="dont-miss-right">
+            <div class="carousel-controls">
+              <button class="control-arrow-btn" onclick="prevDontMiss()" aria-label="Previous announcement">‹</button>
+              <div class="slide-indicators" id="dontMissIndicators"></div>
+              <button class="control-arrow-btn" onclick="nextDontMiss()" aria-label="Next announcement">›</button>
+            </div>
+            <a href="./news.html" class="dont-miss-link">
+              <span>Details</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. News Discovery Section -->
+      <section class="news-discovery-section">
+        <div class="news-discovery-header">
+          <div class="discovery-title-group">
+            <h2>Campus Stories & Discoveries</h2>
+            <p>Explore articles, research notices, and student updates across faculties.</p>
+          </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs-nav">
+          <button class="cat-tab-btn active" data-cat="for-you">✨ For You</button>
+          <button class="cat-tab-btn" data-cat="all-news">All News</button>
+          <button class="cat-tab-btn" data-cat="events">Events</button>
+          <button class="cat-tab-btn" data-cat="academic">Academic</button>
+          <button class="cat-tab-btn" data-cat="announcements">Announcements</button>
+          <button class="cat-tab-btn" data-cat="campus-life">Campus Life</button>
+        </div>
+
+        <!-- For You Personalization Banner -->
+        <div class="for-you-prompt" id="forYouPromptBar">
+          <div>
+            <strong>Curated for your interests:</strong>
+            <span id="userInterestsText" style="margin-left: 4px;">Events, Academic, Technology, Campus Life</span>
+          </div>
+          <button class="customize-interests-btn" onclick="openInterestsModal()">
+            Customize Interests
+          </button>
+        </div>
+
+        <!-- Discovery Grid of News Cards -->
+        <div class="news-cards-grid" id="discoveryCardsGrid">
+          <!-- Rendered dynamically by js/main.js -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- ARTICLE READING MODAL -->
+  <!-- ========================================================= -->
+  <div class="article-modal-backdrop" id="articleModal" onclick="closeArticleModal()">
+    <div class="article-modal-window" onclick="event.stopPropagation()">
+      <div class="modal-close-bar">
+        <button class="back-btn-text" onclick="closeArticleModal()">
+          <span>←</span>
+          <span>Back to Feed</span>
+        </button>
+        <button class="close-x-btn" onclick="closeArticleModal()" aria-label="Close article">✕</button>
+      </div>
+
+      <div class="article-modal-body" id="articleModalContent">
+        <!-- Rendered dynamically by js/main.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- USER INTERESTS MODAL -->
+  <!-- ========================================================= -->
+  <div class="interests-modal-backdrop" id="interestsModal" onclick="closeInterestsModal()">
+    <div class="interests-modal-window" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dark-slate);">Customize Feed Topics</h3>
+        <button class="close-x-btn" onclick="closeInterestsModal()">✕</button>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--muted-slate); margin-bottom: 16px;">
+        Select topics you want to see prioritized in your "For You" discovery stream:
+      </p>
+
+      <div id="interestsChipsContainer" style="margin-bottom: 24px;">
+        <!-- Rendered dynamically by js/main.js -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="customize-interests-btn" onclick="closeInterestsModal()">Cancel</button>
+        <button class="btn-submit-primary" style="padding: 8px 18px;" onclick="saveInterests()">Save Preferences</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-time Toast Notifications Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Campus Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <div class="brand-logo-icon" style="width: 32px; height: 32px; font-size: 1rem;">N</div>
+            <div style="font-weight: 800; color: var(--dark-slate); font-size: 1.05rem;">NSBM NewsDesk — Campus Pulse</div>
+          </div>
+          <p style="line-height: 1.6; color: var(--muted-slate); font-size: 0.78rem;">
+            The unified university news, campus events radar, and student information hub for NSBM Green University Town, Pitipana, Homagama, Sri Lanka.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-links-list">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./pulse.html">Campus Pulse</a></li>
+            <li><a href="./news.html">Latest News</a></li>
+            <li><a href="./submit.html">Submit Story</a></li>
+            <li><a href="./bookmarks.html">My Bookmarks</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Academic Cohort</div>
+          <p style="font-size: 0.78rem; color: var(--body-slate); line-height: 1.6;">
+            Faculty of Computing<br>
+            Web & Mobile Application Development<br>
+            <strong>Batch 26.1 IFSL</strong><br>
+            Topic 1: Campus News & Information System
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 NSBM Green University Town. All rights reserved.</span>
+        <span>HTML5 · CSS3 · Vanilla JavaScript · PHP · MySQL Architecture</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modular JavaScript Files -->
+  <script src="./js/auth.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
