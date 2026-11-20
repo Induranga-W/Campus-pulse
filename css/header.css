@@ -1,0 +1,381 @@
+/*
+ * NSBM NewsDesk — Campus Pulse
+ * css/header.css
+ * Navigation, branding, profile badge, and role-aware profile dropdown menu.
+ */
+
+.main-nav-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+
+/* Brand Wordmark */
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.brand-logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #059669, #064e3b);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(6, 78, 59, 0.25);
+  flex-shrink: 0;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--dark-slate);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.brand-sub {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--primary-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+/* 4 Primary Navigation Links: Home, Campus Pulse, Latest News, Submit */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--body-slate);
+  padding: 8px 2px;
+  position: relative;
+  transition: color 0.15s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-item-link:hover {
+  color: var(--primary-accent);
+}
+
+.nav-item-link.active {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.nav-item-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--primary-accent);
+  border-radius: 4px;
+}
+
+/* Nav Actions Container */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.icon-btn {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 14px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--body-slate);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.18s ease;
+  text-decoration: none;
+}
+
+.icon-btn:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary-border);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.hamburger-toggle {
+  display: none;
+}
+
+/* User Profile Badge */
+.user-profile-wrapper {
+  position: relative;
+}
+
+.user-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 5px;
+  background-color: #f1f5f9;
+  border-radius: 30px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--dark-slate);
+  transition: all 0.18s ease;
+  user-select: none;
+}
+
+.user-profile-badge:hover,
+.user-profile-badge.active {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.user-avatar-mini {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #cbd5e1;
+}
+
+.user-profile-badge .dropdown-caret {
+  font-size: 0.65rem;
+  color: #64748b;
+  transition: transform 0.2s ease;
+  margin-left: 2px;
+}
+
+.user-profile-badge.active .dropdown-caret {
+  transform: rotate(180deg);
+}
+
+/* Profile Dropdown Menu */
+.profile-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 260px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
+  padding: 8px 0;
+  display: none;
+  z-index: 200;
+  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-dropdown-menu.open {
+  display: block;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-user-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dropdown-avatar-lg {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--primary-border);
+}
+
+.dropdown-user-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.dropdown-user-name {
+  font-size: 0.88rem;
+  font-weight: 750;
+  color: var(--dark-slate);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-user-email {
+  font-size: 0.72rem;
+  color: var(--muted-slate);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.dropdown-role-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.dropdown-role-badge.admin {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.dropdown-role-badge.user {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.dropdown-menu-list {
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
+}
+
+.dropdown-item-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--dark-slate);
+  transition: all 0.15s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dropdown-item-link:hover {
+  background-color: #f8fafc;
+  color: var(--primary-accent);
+}
+
+.dropdown-item-link .item-icon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+  display: inline-block;
+}
+
+/* Admin Dashboard Dropdown Item Highlight */
+.dropdown-item-link.admin-dashboard-link {
+  color: #065f46;
+  background-color: #f0fdf4;
+  font-weight: 700;
+  border-left: 3px solid #059669;
+}
+
+.dropdown-item-link.admin-dashboard-link:hover {
+  background-color: #dcfce7;
+  color: #047857;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: #f1f5f9;
+  margin: 6px 0;
+}
+
+.dropdown-item-link.logout-link {
+  color: #dc2626;
+}
+
+.dropdown-item-link.logout-link:hover {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+/* Mobile Nav Drawer */
+.mobile-nav-drawer {
+  display: none;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px;
+}
+
+.mobile-nav-drawer.open {
+  display: block;
+}
+
+.mobile-nav-drawer a {
+  display: block;
+  padding: 10px 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #f1f5f9;
+  text-decoration: none;
+  color: var(--dark-slate);
+}
+
+.mobile-nav-drawer a.active {
+  color: var(--primary-accent);
+}
+
+@media (max-width: 900px) {
+  .nav-menu {
+    display: none;
+  }
+  .hamburger-toggle {
+    display: inline-flex;
+  }
+}
