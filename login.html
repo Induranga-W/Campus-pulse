@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Login — NSBM NewsDesk | NSBM Green University</title>
+  <meta name="description" content="Sign in to your NSBM Green University NewsDesk student or administrative account." />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Newsreader -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Modular CSS Files -->
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/header.css" />
+  <link rel="stylesheet" href="./css/footer.css" />
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <!-- Simple Brand Header -->
+  <header class="main-nav-header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="./index.html" class="brand-link">
+          <div class="brand-logo-icon">N</div>
+          <div class="brand-text">
+            <span class="brand-title">NSBM NewsDesk</span>
+            <span class="brand-sub">Campus Pulse</span>
+          </div>
+        </a>
+
+        <ul class="nav-menu">
+          <li><a href="./index.html" class="nav-item-link">Home</a></li>
+          <li><a href="./pulse.html" class="nav-item-link">Campus Pulse</a></li>
+          <li><a href="./news.html" class="nav-item-link">Latest News</a></li>
+          <li><a href="./submit.html" class="nav-item-link">Submit</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="./register.html" class="btn-secondary" style="padding: 7px 14px; font-size: 0.8rem;">
+            Create Account
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 20px;">
+    <div style="width: 100%; max-width: 440px; background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-md);">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <div class="brand-logo-icon" style="margin: 0 auto 12px; width: 44px; height: 44px; font-size: 1.4rem;">N</div>
+        <h1 style="font-size: 1.4rem; font-weight: 800; color: var(--dark-slate);">Sign In to NSBM NewsDesk</h1>
+        <p style="font-size: 0.82rem; color: var(--muted-slate); margin-top: 4px;">Enter your student or administrative credentials</p>
+      </div>
+
+      <div id="loginErrorMessage" style="display: none; background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 10px 14px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 18px; font-weight: 600;"></div>
+
+      <form id="loginForm" onsubmit="handleFormLogin(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" class="form-control" placeholder="e.g., kasun@students.nsbm.ac.lk" required />
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required />
+        </div>
+
+        <button type="submit" class="btn-submit-primary" style="width: 100%; margin-top: 10px;">
+          Sign In
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 20px; font-size: 0.8rem; color: var(--muted-slate);">
+        Don't have an account? <a href="./register.html" style="color: var(--primary-accent); font-weight: 700;">Register here</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" style="margin-top: 0; padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.75rem; color: var(--muted-slate);">
+      © 2026 NSBM Green University Town. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="./js/auth.js"></script>
+  <script>
+    async function handleFormLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errBox = document.getElementById('loginErrorMessage');
+      const submitButton = document.querySelector('#loginForm button[type="submit"]');
+      errBox.style.display = 'none';
+      submitButton.disabled = true;
+      submitButton.textContent = 'Signing in...';
+
+      try {
+        const res = await fetch('./backend/login.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ email, password }),
+          credentials: 'same-origin'
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success || !data.user) {
+          throw new Error(data.error || 'Unable to sign in. Please check your details and try again.');
+        }
+        localStorage.removeItem('nsbm_session_user');
+        window.location.href = data.user.role === 'ADMIN' ? './admin/dashboard.html' : './index.html';
+      } catch (err) {
+        errBox.textContent = err.message || 'Could not connect to the server. Make sure Apache and MySQL are running.';
+        errBox.style.display = 'block';
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Sign In';
+      }
+    }
+  </script>
+</body>
+</html>
