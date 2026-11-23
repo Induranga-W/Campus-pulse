@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Admin Dashboard — NSBM NewsDesk | NSBM Green University</title>
+  <meta name="description" content="Staff administration and editorial management console for NSBM Green University NewsDesk and Campus Pulse." />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Newsreader -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Modular CSS Files -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/header.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="main-nav-header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="../index.html" class="brand-link">
+          <div class="brand-logo-icon">N</div>
+          <div class="brand-text">
+            <span class="brand-title">NSBM NewsDesk</span>
+            <span class="brand-sub">Staff Admin Console</span>
+          </div>
+        </a>
+
+        <ul class="nav-menu">
+          <li><a href="../index.html" class="nav-item-link">Student Home</a></li>
+          <li><a href="../pulse.html" class="nav-item-link">Campus Pulse</a></li>
+          <li><a href="../news.html" class="nav-item-link">Latest News</a></li>
+          <li><a href="../submit.html" class="nav-item-link">Submit Story</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <!-- Profile Badge with Account Dropdown -->
+          <div class="user-profile-wrapper">
+            <div class="user-profile-badge" id="userProfileBadgeBtn" title="Account Menu">
+              <img id="navUserBadgeAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Admin" class="user-avatar-mini" />
+              <span id="navUserBadgeName">Dr. Rasika Silva</span>
+              <span class="dropdown-caret">▼</span>
+            </div>
+
+            <div class="profile-dropdown-menu" id="profileDropdownMenu"></div>
+          </div>
+
+          <button class="icon-btn hamburger-toggle" id="hamburgerToggle" aria-label="Toggle Navigation Menu">
+            ☰
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+      <a href="../index.html">Student Home</a>
+      <a href="../pulse.html">Campus Pulse</a>
+      <a href="../news.html">Latest News</a>
+      <a href="../submit.html">Submit Story</a>
+      <a href="./dashboard.html" class="active" style="color: #059669; font-weight: 700;">Admin Dashboard</a>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- ADMIN DASHBOARD CONTENT -->
+  <!-- ========================================================= -->
+  <main class="page-view" style="padding-top: 20px;">
+    <div class="container">
+
+      <!-- Admin Welcome Banner -->
+      <div class="admin-welcome-banner">
+        <div>
+          <div class="admin-role-badge">
+            <span>🛡️ Staff Administration Console</span>
+          </div>
+          <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--dark-slate); margin-top: 2px;">
+            Good morning, <span id="adminGreetingName">Dr. Rasika Silva</span>
+          </h1>
+          <p style="font-size: 0.82rem; color: var(--muted-slate); margin-top: 2px;">
+            Faculty of Computing & Media Unit · Live editorial operations for NSBM Green University.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+          <a href="../index.html" class="btn-secondary" style="font-size: 0.82rem; padding: 10px 16px;">
+            <span>Return to Student Feed</span>
+          </a>
+          <button class="btn-submit-primary" style="font-size: 0.82rem; padding: 10px 18px;" onclick="openAdminCreateNewsModal()">
+            <span>+ Create News Article</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Layout: Sidebar + Main Content -->
+      <div class="admin-layout-wrapper">
+
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar-box">
+          <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #94a3b8; padding: 6px 12px 6px;">Operations</div>
+          <button class="admin-nav-item-btn active" onclick="switchAdminTab('dashboard', this)">
+            <span>📊 Dashboard</span>
+          </button>
+
+          <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #94a3b8; padding: 12px 12px 6px;">Content Modules</div>
+          <button class="admin-nav-item-btn" onclick="switchAdminTab('news', this)">
+            <span>📰 News Management</span>
+            <span class="admin-nav-badge" id="adminNewsBadge">7</span>
+          </button>
+
+          <button class="admin-nav-item-btn" onclick="switchAdminTab('pulse', this)">
+            <span>📡 Campus Pulse Radar</span>
+            <span class="admin-nav-badge">Live</span>
+          </button>
+
+          <button class="admin-nav-item-btn" onclick="switchAdminTab('submissions', this)">
+            <span>📥 Student Submissions</span>
+            <span class="admin-nav-badge" id="adminPendingBadge" style="background: #fef3c7; color: #b45309;">2 Pending</span>
+          </button>
+        </aside>
+
+        <!-- Main Tab Panes -->
+        <div style="min-width: 0;">
+
+          <!-- 1. DASHBOARD OVERVIEW PANE -->
+          <div class="admin-tab-pane active" id="admin-pane-dashboard">
+
+            <!-- Metrics Cards -->
+            <div class="admin-metrics-row">
+              <div class="admin-stat-card">
+                <div class="admin-stat-icon-wrap green">📰</div>
+                <div>
+                  <div class="admin-stat-num" id="adminStatTotalNews">7</div>
+                  <div class="admin-stat-label">Published Articles</div>
+                </div>
+              </div>
+
+              <div class="admin-stat-card">
+                <div class="admin-stat-icon-wrap amber">📥</div>
+                <div>
+                  <div class="admin-stat-num" id="adminStatPending">2</div>
+                  <div class="admin-stat-label">Pending Submissions</div>
+                </div>
+              </div>
+
+              <div class="admin-stat-card">
+                <div class="admin-stat-icon-wrap blue">📡</div>
+                <div>
+                  <div class="admin-stat-num" id="adminStatPulse">4</div>
+                  <div class="admin-stat-label">Active Pulse Radar Items</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pending Review Queue -->
+            <div class="admin-data-panel">
+              <div class="admin-panel-title-bar">
+                <div>
+                  <h3 style="font-size: 1rem; font-weight: 800; color: var(--dark-slate);">Student Reporter Queue (Pending Review)</h3>
+                  <p style="font-size: 0.75rem; color: var(--muted-slate); margin-top: 2px;">Campus submissions awaiting faculty editorial approval.</p>
+                </div>
+                <button class="customize-interests-btn" onclick="switchAdminTab('submissions')">View All Submissions</button>
+              </div>
+
+              <div style="overflow-x: auto;">
+                <table class="admin-data-table">
+                  <thead>
+                    <tr>
+                      <th>Ref Code</th>
+                      <th>Headline</th>
+                      <th>Reporter</th>
+                      <th>Category</th>
+                      <th>Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminDashboardPendingTbody">
+                    <!-- Populated by js/admin.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Recent Live News -->
+            <div class="admin-data-panel">
+              <div class="admin-panel-title-bar">
+                <div>
+                  <h3 style="font-size: 1rem; font-weight: 800; color: var(--dark-slate);">Recently Published Articles</h3>
+                  <p style="font-size: 0.75rem; color: var(--muted-slate); margin-top: 2px;">Latest stories broadcast to university students.</p>
+                </div>
+                <button class="customize-interests-btn" onclick="switchAdminTab('news')">Manage All News</button>
+              </div>
+
+              <div style="overflow-x: auto;">
+                <table class="admin-data-table">
+                  <thead>
+                    <tr>
+                      <th>Headline</th>
+                      <th>Category</th>
+                      <th>Author</th>
+                      <th>Date</th>
+                      <th>Views</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminDashboardRecentTbody">
+                    <!-- Populated by js/admin.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 2. NEWS MANAGEMENT PANE -->
+          <div class="admin-tab-pane" id="admin-pane-news">
+            <div class="admin-data-panel">
+              <div class="admin-panel-title-bar">
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--dark-slate);">News Management</h3>
+                  <p style="font-size: 0.78rem; color: var(--muted-slate); margin-top: 2px;">Review, publish, and delete campus articles.</p>
+                </div>
+                <button class="btn-submit-primary" style="font-size: 0.8rem; padding: 8px 16px;" onclick="openAdminCreateNewsModal()">+ New Story</button>
+              </div>
+
+              <!-- Filter Toolbar -->
+              <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+                <input type="text" id="adminNewsSearchInput" class="form-control" style="max-width: 280px;" placeholder="Filter by title or author..." oninput="renderAdminNewsTable()" />
+                <select id="adminNewsCategoryFilter" class="form-control" style="max-width: 180px;" onchange="renderAdminNewsTable()">
+                  <option value="All">All Categories</option>
+                  <option value="Events">Events</option>
+                  <option value="Academic">Academic</option>
+                  <option value="Announcements">Announcements</option>
+                  <option value="Campus Life">Campus Life</option>
+                </select>
+              </div>
+
+              <div style="overflow-x: auto;">
+                <table class="admin-data-table">
+                  <thead>
+                    <tr>
+                      <th>Story</th>
+                      <th>Category</th>
+                      <th>Author</th>
+                      <th>Published</th>
+                      <th>Views</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminNewsTableTbody">
+                    <!-- Populated by js/admin.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. CAMPUS PULSE RADAR PANE -->
+          <div class="admin-tab-pane" id="admin-pane-pulse">
+            <div class="admin-data-panel">
+              <div class="admin-panel-title-bar">
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--dark-slate);">Campus Pulse Radar Management</h3>
+                  <p style="font-size: 0.78rem; color: var(--muted-slate); margin-top: 2px;">Control live campus activities, timetables, and statuses.</p>
+                </div>
+                <button class="btn-submit-primary" style="font-size: 0.8rem; padding: 8px 16px;" onclick="openAdminAddPulseModal()">+ Add Activity</button>
+              </div>
+
+              <div id="adminPulseToolbar" style="display: flex; gap: 8px; margin-bottom: 18px;">
+                <button class="pulse-tab active" onclick="filterClientAdminPulse('all', this)">All</button>
+                <button class="pulse-tab" onclick="filterClientAdminPulse('happening_now', this)">🟢 Happening Now</button>
+                <button class="pulse-tab" onclick="filterClientAdminPulse('upcoming', this)">🔵 Upcoming</button>
+                <button class="pulse-tab" onclick="filterClientAdminPulse('completed', this)">⚪ Completed</button>
+              </div>
+
+              <div id="adminPulseCardsContainer">
+                <!-- Populated by js/admin.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. SUBMISSIONS QUEUE PANE -->
+          <div class="admin-tab-pane" id="admin-pane-submissions">
+            <div class="admin-data-panel">
+              <div class="admin-panel-title-bar">
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--dark-slate);">Student Reporter Submissions</h3>
+                  <p style="font-size: 0.78rem; color: var(--muted-slate); margin-top: 2px;">Review student news submissions and publish them live to campus feeds.</p>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 18px;">
+                <input type="text" id="adminSubmissionFilterInput" class="form-control" style="max-width: 320px;" placeholder="Search by student name, headline, or ref..." oninput="renderAdminSubmissionsTable()" />
+              </div>
+
+              <div id="adminSubmissionsCardsList">
+                <!-- Populated by js/admin.js -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- ADMIN MODAL: CREATE NEWS -->
+  <!-- ========================================================= -->
+  <div class="interests-modal-backdrop" id="adminCreateNewsModal" onclick="closeAdminCreateNewsModal()">
+    <div class="interests-modal-window" style="max-width: 620px;" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dark-slate);">Publish New Campus News</h3>
+        <button class="close-x-btn" onclick="closeAdminCreateNewsModal()">✕</button>
+      </div>
+
+      <form onsubmit="handleAdminCreateNewsSubmit(event)">
+        <div class="form-group">
+          <label>Headline / Title <span class="req">*</span></label>
+          <input type="text" id="adminNewNewsTitle" class="form-control" placeholder="e.g., NSBM Green University Recognized for Sustainable Campus" required />
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label>Category <span class="req">*</span></label>
+            <select id="adminNewNewsCategory" class="form-control">
+              <option value="Events">Events</option>
+              <option value="Academic">Academic</option>
+              <option value="Announcements">Announcements</option>
+              <option value="Campus Life">Campus Life</option>
+              <option value="Technology">Technology</option>
+              <option value="Sports">Sports</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Author Byline</label>
+            <input type="text" id="adminNewNewsAuthor" class="form-control" value="Dr. Rasika Silva (Faculty Editor)" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Cover Photo</label>
+          <select id="adminNewNewsCover" class="form-control">
+            <option value="../images/hero_innovation_week.jpg">Innovation Week & Concourse</option>
+            <option value="../images/news_ai_research_lab.jpg">AI Research & Computing Complex</option>
+            <option value="../images/news_career_fair.jpg">Auditorium Career Fair</option>
+            <option value="../images/news_cricket_tournament.jpg">Campus Sports Grounds</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Short Summary (Preview feed) <span class="req">*</span></label>
+          <textarea id="adminNewNewsSummary" class="form-control" style="min-height: 65px;" placeholder="Brief summary of the story..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Full Content <span class="req">*</span></label>
+          <textarea id="adminNewNewsContent" class="form-control" style="min-height: 110px;" placeholder="Complete story content, paragraphs, quotes..." required></textarea>
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+          <input type="checkbox" id="adminNewNewsImportant" checked />
+          <label for="adminNewNewsImportant" style="margin: 0; cursor: pointer;">Pin as Featured / Important Story</label>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn-secondary" onclick="closeAdminCreateNewsModal()">Cancel</button>
+          <button type="submit" class="btn-submit-primary">Publish Live Now</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- ADMIN MODAL: ADD PULSE ACTIVITY -->
+  <!-- ========================================================= -->
+  <div class="interests-modal-backdrop" id="adminAddPulseModal" onclick="closeAdminAddPulseModal()">
+    <div class="interests-modal-window" style="max-width: 580px;" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dark-slate);">Add Campus Pulse Activity</h3>
+        <button class="close-x-btn" onclick="closeAdminAddPulseModal()">✕</button>
+      </div>
+
+      <form onsubmit="handleAdminAddPulseSubmit(event)">
+        <div class="form-group">
+          <label>Activity Title <span class="req">*</span></label>
+          <input type="text" id="adminNewPulseTitle" class="form-control" placeholder="e.g., Computing Club Hackathon Briefing" required />
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label>Location Venue</label>
+            <input type="text" id="adminNewPulseLocation" class="form-control" placeholder="e.g., Computing Lab 4, Level 3" />
+          </div>
+
+          <div class="form-group">
+            <label>Time / Schedule</label>
+            <input type="text" id="adminNewPulseTime" class="form-control" placeholder="e.g., 2:00 PM - 4:30 PM" />
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label>Category</label>
+            <select id="adminNewPulseCategory" class="form-control">
+              <option value="Technology">Technology</option>
+              <option value="Academic">Academic</option>
+              <option value="Campus Life">Campus Life</option>
+              <option value="Sports">Sports</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Initial Status</label>
+            <select id="adminNewPulseStatus" class="form-control">
+              <option value="happening_now">🟢 Happening Now</option>
+              <option value="upcoming" selected>🔵 Upcoming</option>
+              <option value="completed">⚪ Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Brief Activity Details</label>
+          <textarea id="adminNewPulseDesc" class="form-control" style="min-height: 65px;" placeholder="Short note about what students should expect or bring..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn-secondary" onclick="closeAdminAddPulseModal()">Cancel</button>
+          <button type="submit" class="btn-submit-primary">Add to Pulse Radar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <div class="brand-logo-icon" style="width: 32px; height: 32px; font-size: 1rem;">N</div>
+            <div style="font-weight: 800; color: var(--dark-slate); font-size: 1.05rem;">NSBM NewsDesk — Campus Pulse</div>
+          </div>
+          <p style="line-height: 1.6; color: var(--muted-slate); font-size: 0.78rem;">
+            Staff administration and editorial portal for NSBM Green University Town, Pitipana, Homagama, Sri Lanka.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-links-list">
+            <li><a href="../index.html">Student Home</a></li>
+            <li><a href="../pulse.html">Campus Pulse</a></li>
+            <li><a href="../news.html">Latest News</a></li>
+            <li><a href="../submit.html">Submit Story</a></li>
+            <li><a href="./dashboard.html">Admin Dashboard</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Academic Directorate</div>
+          <p style="font-size: 0.78rem; color: var(--body-slate); line-height: 1.6;">
+            Faculty of Computing & Media Unit<br>
+            <strong>Batch 26.1 IFSL</strong><br>
+            Administrative Access Level: Tier 1
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 NSBM Green University Town. All rights reserved.</span>
+        <span>HTML5 · CSS3 · Vanilla JavaScript · PHP · MySQL Architecture</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>
