@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Story — NSBM NewsDesk | Campus Reporter</title>
+  <meta name="description" content="Submit campus stories, society milestones, and university research news for review by the NSBM NewsDesk editorial board." />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Newsreader -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Modular CSS Files -->
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/header.css" />
+  <link rel="stylesheet" href="./css/footer.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="main-nav-header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="./index.html" class="brand-link">
+          <div class="brand-logo-icon">N</div>
+          <div class="brand-text">
+            <span class="brand-title">NSBM NewsDesk</span>
+            <span class="brand-sub">Campus Pulse</span>
+          </div>
+        </a>
+
+        <ul class="nav-menu">
+          <li><a href="./index.html" class="nav-item-link">Home</a></li>
+          <li><a href="./pulse.html" class="nav-item-link">Campus Pulse</a></li>
+          <li><a href="./news.html" class="nav-item-link">Latest News</a></li>
+          <li><a href="./submit.html" class="nav-item-link active">Submit</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="./news.html" class="icon-btn" title="Search Campus News">
+            <span>🔍</span>
+            <span>Search</span>
+          </a>
+
+          <!-- Profile Badge with Account Dropdown -->
+          <div class="user-profile-wrapper">
+            <div class="user-profile-badge" id="userProfileBadgeBtn" title="Account Menu">
+              <img id="navUserBadgeAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150" alt="Student" class="user-avatar-mini" />
+              <span id="navUserBadgeName">Kasun Perera</span>
+              <span class="dropdown-caret">▼</span>
+            </div>
+
+            <div class="profile-dropdown-menu" id="profileDropdownMenu"></div>
+          </div>
+
+          <button class="icon-btn hamburger-toggle" id="hamburgerToggle" aria-label="Toggle Navigation Menu">
+            ☰
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+      <a href="./index.html">Home</a>
+      <a href="./pulse.html">Campus Pulse</a>
+      <a href="./news.html">Latest News</a>
+      <a href="./submit.html" class="active">Submit</a>
+      <a href="./profile.html">My Profile</a>
+      <a href="./bookmarks.html">My Bookmarks</a>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- SUBMIT STORY CONTENT -->
+  <!-- ========================================================= -->
+  <main class="page-view">
+    <div class="container">
+      <div style="margin-bottom: 24px;">
+        <h1 style="font-size: 1.8rem; font-weight: 800; color: var(--dark-slate);">Submit Your Campus Story</h1>
+        <p style="font-size: 0.85rem; color: var(--muted-slate); margin-top: 4px;">
+          Have a campus story, club update, or faculty achievement worth sharing with NSBM Green University?
+        </p>
+      </div>
+
+      <!-- Submission Success Banner -->
+      <div class="submission-success-banner" id="submissionSuccessBanner">
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+          <span style="font-size: 1.4rem;">🎉</span>
+          <div>
+            <strong style="color: #064e3b; font-size: 0.95rem; display: block;">Story Successfully Lodged!</strong>
+            <p style="font-size: 0.82rem; color: #065f46; margin: 4px 0;">
+              Your submission "<span id="submittedStoryTitle"></span>" has been received under Reference ID:
+              <strong id="submittedRefId" style="background: #a7f3d0; padding: 2px 6px; border-radius: 4px;"></strong>.
+            </p>
+            <p style="font-size: 0.75rem; color: #047857;">Our editorial board will review the story within 24 hours.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layout Grid: Form (Left) & Guidelines (Right) -->
+      <div class="submit-layout-grid">
+        <div class="submit-card-form">
+          <div class="form-title-lead">Campus Reporter Submission</div>
+          <p class="form-subtitle">Fill in the story details below. Verified stories will be broadcast across the university network.</p>
+
+          <form id="storySubmissionForm" onsubmit="handleStorySubmit(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label>Student Full Name <span class="req">*</span></label>
+                <input type="text" id="submitStudentName" class="form-control" value="Kasun Perera" required />
+                <div class="form-error-msg" id="nameError">Full name is required.</div>
+              </div>
+
+              <div class="form-group">
+                <label>NSBM Student Email <span class="req">*</span></label>
+                <input type="email" id="submitStudentEmail" class="form-control" value="kasun@students.nsbm.ac.lk" required />
+                <div class="form-error-msg" id="emailError">Valid student email is required.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Article Headline / Title <span class="req">*</span></label>
+              <input type="text" id="submitHeadline" class="form-control" placeholder="e.g., NSBM Computing Club Wins National Hackathon 2026" required />
+              <div class="form-error-msg" id="headlineError">Headline is required.</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label>Category <span class="req">*</span></label>
+                <select id="submitCategory" class="form-control">
+                  <option value="Events">Events</option>
+                  <option value="Academic">Academic</option>
+                  <option value="Announcements">Announcements</option>
+                  <option value="Campus Life">Campus Life</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Sports">Sports</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Cover Photo URL (Optional)</label>
+                <input type="text" id="submitImageUrl" class="form-control" placeholder="./images/hero_innovation_week.jpg" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Story Details & Full Report <span class="req">*</span></label>
+              <textarea id="submitDetails" class="form-control" style="min-height: 120px;" placeholder="Write full article content. Include background, attendee quotes, dates, or contact info..." required></textarea>
+              <div class="form-error-msg" id="detailsError">Story content is required.</div>
+            </div>
+
+            <button type="submit" class="btn-submit-primary">Submit Story for Review</button>
+          </form>
+        </div>
+
+        <!-- Sidebar Guidelines -->
+        <div>
+          <div class="submit-sidebar-box">
+            <h4>Editorial Guidelines</h4>
+            <p>To ensure high journalism standards across NSBM Green University, please review these key criteria:</p>
+            <div class="workflow-step">
+              <div class="step-number">✓</div>
+              <span><strong>Factual Accuracy:</strong> Check dates, names, faculty designations, and venues.</span>
+            </div>
+            <div class="workflow-step">
+              <div class="step-number">✓</div>
+              <span><strong>Constructive Voice:</strong> Maintain an encouraging, academic, and respectful tone.</span>
+            </div>
+            <div class="workflow-step">
+              <div class="step-number">✓</div>
+              <span><strong>Author Byline:</strong> All published articles credit the student reporter and batch.</span>
+            </div>
+          </div>
+
+          <div class="submit-sidebar-box">
+            <h4>Review Lifecycle</h4>
+            <div class="workflow-step">
+              <div class="step-number">1</div>
+              <span><strong>Draft Received:</strong> Registered into system queue.</span>
+            </div>
+            <div class="workflow-step">
+              <div class="step-number">2</div>
+              <span><strong>NewsDesk Review:</strong> Editorial staff checks clarity & verification.</span>
+            </div>
+            <div class="workflow-step">
+              <div class="step-number">3</div>
+              <span><strong>Published Live:</strong> Broadcast across campus feeds.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Campus Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <div class="brand-logo-icon" style="width: 32px; height: 32px; font-size: 1rem;">N</div>
+            <div style="font-weight: 800; color: var(--dark-slate); font-size: 1.05rem;">NSBM NewsDesk — Campus Pulse</div>
+          </div>
+          <p style="line-height: 1.6; color: var(--muted-slate); font-size: 0.78rem;">
+            The unified university news, campus events radar, and student information hub for NSBM Green University Town, Pitipana, Homagama, Sri Lanka.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-links-list">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./pulse.html">Campus Pulse</a></li>
+            <li><a href="./news.html">Latest News</a></li>
+            <li><a href="./submit.html">Submit Story</a></li>
+            <li><a href="./bookmarks.html">My Bookmarks</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Academic Cohort</div>
+          <p style="font-size: 0.78rem; color: var(--body-slate); line-height: 1.6;">
+            Faculty of Computing<br>
+            Web & Mobile Application Development<br>
+            <strong>Batch 26.1 IFSL</strong><br>
+            Topic 1: Campus News & Information System
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 NSBM Green University Town. All rights reserved.</span>
+        <span>HTML5 · CSS3 · Vanilla JavaScript · PHP · MySQL Architecture</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script>
+    async function handleStorySubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('submitStudentName').value.trim();
+      const email = document.getElementById('submitStudentEmail').value.trim();
+      const headline = document.getElementById('submitHeadline').value.trim();
+      const category = document.getElementById('submitCategory').value;
+      const details = document.getElementById('submitDetails').value.trim();
+      const imageUrl = document.getElementById('submitImageUrl').value.trim();
+
+      if (!name || !email || !headline || !details) {
+        showToast('Please fill out all required fields.', 'error');
+        return;
+      }
+
+      let refId = 'NSBM-SUB-2026-' + Math.floor(1000 + Math.random() * 9000);
+
+      try {
+        const res = await fetch('./backend/submit.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            student_name: name,
+            student_email: email,
+            headline: headline,
+            category: category,
+            details: details,
+            image_url: imageUrl
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.ref_id) refId = data.ref_id;
+        }
+      } catch (err) {}
+
+      const banner = document.getElementById('submissionSuccessBanner');
+      if (banner) {
+        document.getElementById('submittedRefId').textContent = refId;
+        document.getElementById('submittedStoryTitle').textContent = headline;
+        banner.classList.add('visible');
+        banner.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      showToast('Story successfully submitted for NewsDesk review!');
+      document.getElementById('storySubmissionForm').reset();
+    }
+  </script>
+</body>
+</html>
