@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — NSBM NewsDesk | NSBM Green University</title>
+  <meta name="description" content="View and manage your student profile and topic preferences on NSBM NewsDesk." />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Newsreader -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Modular CSS Files -->
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/header.css" />
+  <link rel="stylesheet" href="./css/footer.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="main-nav-header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="./index.html" class="brand-link">
+          <div class="brand-logo-icon">N</div>
+          <div class="brand-text">
+            <span class="brand-title">NSBM NewsDesk</span>
+            <span class="brand-sub">Campus Pulse</span>
+          </div>
+        </a>
+
+        <ul class="nav-menu">
+          <li><a href="./index.html" class="nav-item-link">Home</a></li>
+          <li><a href="./pulse.html" class="nav-item-link">Campus Pulse</a></li>
+          <li><a href="./news.html" class="nav-item-link">Latest News</a></li>
+          <li><a href="./submit.html" class="nav-item-link">Submit</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="./news.html" class="icon-btn" title="Search Campus News">
+            <span>🔍</span>
+            <span>Search</span>
+          </a>
+
+          <!-- Profile Badge with Account Dropdown -->
+          <div class="user-profile-wrapper">
+            <div class="user-profile-badge" id="userProfileBadgeBtn" title="Account Menu">
+              <img id="navUserBadgeAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150" alt="Student" class="user-avatar-mini" />
+              <span id="navUserBadgeName">Kasun Perera</span>
+              <span class="dropdown-caret">▼</span>
+            </div>
+
+            <div class="profile-dropdown-menu" id="profileDropdownMenu"></div>
+          </div>
+
+          <button class="icon-btn hamburger-toggle" id="hamburgerToggle" aria-label="Toggle Navigation Menu">
+            ☰
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+      <a href="./index.html">Home</a>
+      <a href="./pulse.html">Campus Pulse</a>
+      <a href="./news.html">Latest News</a>
+      <a href="./submit.html">Submit</a>
+      <a href="./profile.html" class="active">My Profile</a>
+      <a href="./bookmarks.html">My Bookmarks</a>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- PROFILE CONTENT -->
+  <!-- ========================================================= -->
+  <main class="page-view">
+    <div class="container" style="max-width: 900px;">
+      
+      <!-- Profile Header Card -->
+      <div style="background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 28px; box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <img id="profileAvatarImg" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150" alt="Avatar" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-border);" />
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h1 id="profileDisplayName" style="font-size: 1.5rem; font-weight: 800; color: var(--dark-slate);">Kasun Perera</h1>
+              <span id="profileRoleBadge" class="dropdown-role-badge user">🎓 Student User</span>
+            </div>
+            <div id="profileDisplayEmail" style="font-size: 0.85rem; color: var(--muted-slate); margin-top: 2px;">kasun@students.nsbm.ac.lk</div>
+            <div style="font-size: 0.78rem; color: var(--primary-accent); font-weight: 700; margin-top: 4px;">
+              <span>🏛️ Faculty of Computing · </span>
+              <span id="profileDisplayCohort">Batch 26.1 IFSL</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <a href="./bookmarks.html" class="btn-secondary" style="font-size: 0.82rem; padding: 9px 16px;">
+            <span>🔖 View Bookmarks</span>
+            <span id="profileBookmarkCount" style="background: #059669; color: #fff; padding: 2px 7px; border-radius: 10px; font-size: 0.72rem; margin-left: 4px;">2</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Account Settings & Feed Topic Preferences Grid -->
+      <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
+        <div style="background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 28px; box-shadow: var(--shadow-sm);">
+          <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--dark-slate); margin-bottom: 6px;">Personalized Feed Topics</h2>
+          <p style="font-size: 0.82rem; color: var(--muted-slate); margin-bottom: 20px;">
+            Select which university subject tracks and faculty areas appear first in your homepage "For You" discovery stream:
+          </p>
+
+          <div id="profileInterestsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px;">
+            <!-- Rendered by js/profile.js -->
+          </div>
+
+          <div style="padding-top: 16px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.75rem; color: var(--muted-slate);">Preferences automatically synchronize with your session.</span>
+            <a href="./index.html" class="btn-submit-primary" style="font-size: 0.82rem; padding: 8px 18px;">
+              Return to Feed →
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Campus Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <div class="brand-logo-icon" style="width: 32px; height: 32px; font-size: 1rem;">N</div>
+            <div style="font-weight: 800; color: var(--dark-slate); font-size: 1.05rem;">NSBM NewsDesk — Campus Pulse</div>
+          </div>
+          <p style="line-height: 1.6; color: var(--muted-slate); font-size: 0.78rem;">
+            The unified university news, campus events radar, and student information hub for NSBM Green University Town, Pitipana, Homagama, Sri Lanka.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-links-list">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./pulse.html">Campus Pulse</a></li>
+            <li><a href="./news.html">Latest News</a></li>
+            <li><a href="./submit.html">Submit Story</a></li>
+            <li><a href="./bookmarks.html">My Bookmarks</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Academic Cohort</div>
+          <p style="font-size: 0.78rem; color: var(--body-slate); line-height: 1.6;">
+            Faculty of Computing<br>
+            Web & Mobile Application Development<br>
+            <strong>Batch 26.1 IFSL</strong><br>
+            Topic 1: Campus News & Information System
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 NSBM Green University Town. All rights reserved.</span>
+        <span>HTML5 · CSS3 · Vanilla JavaScript · PHP · MySQL Architecture</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/auth.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/profile.js"></script>
+</body>
+</html>
