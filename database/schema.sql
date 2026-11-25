@@ -4,6 +4,8 @@
 -- NSBM Green University, Pitipana, Homagama, Sri Lanka
 -- =====================================================================
 
+CREATE DATABASE IF NOT EXISTS `nsbm_newsdesk` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `nsbm_newsdesk`;
 
 -- Drop existing tables in dependency order if re-importing
 DROP TABLE IF EXISTS `comments`;
