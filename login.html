@@ -15,6 +15,12 @@
   <link rel="stylesheet" href="./css/style.css" />
   <link rel="stylesheet" href="./css/header.css" />
   <link rel="stylesheet" href="./css/footer.css" />
+  <style>
+    .role-switch { display: flex; gap: 6px; background: #f1f5f9; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 4px; margin-bottom: 22px; }
+    .role-switch-btn { flex: 1; border: 0; background: transparent; padding: 9px 12px; border-radius: 9px; font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--muted-slate, #64748b); cursor: pointer; transition: background .15s, color .15s, box-shadow .15s; }
+    .role-switch-btn.active { background: #ffffff; color: var(--primary-accent, #059669); box-shadow: 0 1px 3px rgba(15, 23, 42, .12); }
+    .role-switch-btn:focus-visible { outline: 2px solid var(--primary-accent, #059669); outline-offset: 1px; }
+  </style>
 </head>
 <body style="display: flex; flex-direction: column; min-height: 100vh;">
 
@@ -54,6 +60,11 @@
         <p style="font-size: 0.82rem; color: var(--muted-slate); margin-top: 4px;">Enter your student or administrative credentials</p>
       </div>
 
+      <div class="role-switch" role="tablist" aria-label="Account type">
+        <button type="button" class="role-switch-btn active" data-type="student" role="tab" onclick="setLoginType('student')">🎓 Student</button>
+        <button type="button" class="role-switch-btn" data-type="admin" role="tab" onclick="setLoginType('admin')">🛡️ Admin</button>
+      </div>
+
       <div id="loginErrorMessage" style="display: none; background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 10px 14px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 18px; font-weight: 600;"></div>
 
       <form id="loginForm" onsubmit="handleFormLogin(event)">
@@ -73,7 +84,7 @@
       </form>
 
       <div style="text-align: center; margin-top: 20px; font-size: 0.8rem; color: var(--muted-slate);">
-        Don't have an account? <a href="./register.html" style="color: var(--primary-accent); font-weight: 700;">Register here</a>
+        Don't have an account? <a href="./register.html" id="loginRegisterLink" style="color: var(--primary-accent); font-weight: 700;">Register here</a>
       </div>
     </div>
   </main>
@@ -86,6 +97,20 @@
 
   <script src="./js/auth.js"></script>
   <script>
+    let loginType = 'student';
+
+    function setLoginType(type) {
+      loginType = type === 'admin' ? 'admin' : 'student';
+      document.querySelectorAll('.role-switch-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.type === loginType);
+      });
+      document.getElementById('loginEmail').placeholder =
+        loginType === 'admin' ? 'e.g., rasika@nsbm.ac.lk' : 'e.g., kasun@students.nsbm.ac.lk';
+      document.getElementById('loginRegisterLink').href =
+        loginType === 'admin' ? './register.html?type=admin' : './register.html';
+      document.getElementById('loginErrorMessage').style.display = 'none';
+    }
+
     async function handleFormLogin(e) {
       e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
@@ -100,7 +125,7 @@
         const res = await fetch('./backend/login.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ account_type: loginType, email, password }),
           credentials: 'same-origin'
         });
         const data = await res.json().catch(() => ({}));
@@ -116,6 +141,11 @@
         submitButton.disabled = false;
         submitButton.textContent = 'Sign In';
       }
+    }
+
+    // Open on the Admin tab when the link is login.html?type=admin
+    if (new URLSearchParams(window.location.search).get('type') === 'admin') {
+      setLoginType('admin');
     }
   </script>
 </body>
