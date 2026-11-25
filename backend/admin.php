@@ -15,6 +15,22 @@ $adminUser = require_admin();
 $pdo = get_db_connection();
 $method = $_SERVER['REQUEST_METHOD'];
 
+// Re-check the database on every request: the account must still be an ACTIVE admin.
+// (A session can outlive an account that was rejected or demoted later.)
+if ($pdo) {
+    try {
+        $roleStmt = $pdo->prepare("SELECT * FROM `users` WHERE `id` = :id LIMIT 1");
+        $roleStmt->execute(['id' => $adminUser['id']]);
+        $dbUser = $roleStmt->fetch();
+    } catch (Throwable $e) {
+        error_log("Admin re-check error: " . $e->getMessage());
+        send_json_response(['success' => false, 'error' => 'Could not verify administrator account.'], 500);
+    }
+    if (!$dbUser || $dbUser['role'] !== 'ADMIN' || ($dbUser['status'] ?? 'active') !== 'active') {
+        send_json_response(['success' => false, 'error' => 'Access denied. Administrator privileges required.'], 403);
+    }
+}
+
 if ($method === 'GET') {
     $action = $_GET['action'] ?? 'overview';
 
@@ -59,6 +75,21 @@ if ($method === 'GET') {
             'pulse_list' => $pulseList,
             'submissions' => $submissions
         ]);
+    }
+
+    // List admin accounts waiting for approval
+    if ($action === 'pending_admins') {
+        if (!$pdo) {
+            send_json_response(['success' => false, 'error' => 'Database connection is unavailable.'], 503);
+        }
+        try {
+            $stmt = $pdo->query("SELECT `id`, `name`, `email`, `cohort` AS `department`, `created_at` FROM `users` WHERE `role` = 'ADMIN' AND `status` = 'pending' ORDER BY `created_at` ASC");
+            $requests = $stmt->fetchAll();
+        } catch (Throwable $e) {
+            error_log("Pending admins error: " . $e->getMessage());
+            send_json_response(['success' => false, 'error' => 'Could not load admin requests.'], 500);
+        }
+        send_json_response(['success' => true, 'requests' => $requests]);
     }
 
     send_json_response(['success' => false, 'error' => 'Unknown action.'], 400);
@@ -269,6 +300,32 @@ if ($method === 'POST') {
         }
 
         send_json_response(['success' => true, 'message' => 'Pulse status updated.']);
+    }
+
+    // 7. Approve or reject a pending admin account
+    if ($action === 'approve_admin' || $action === 'reject_admin') {
+        $targetId = (int)($input['user_id'] ?? 0);
+        if ($targetId <= 0) {
+            send_json_response(['success' => false, 'error' => 'User ID required.'], 400);
+        }
+        if (!$pdo) {
+            send_json_response(['success' => false, 'error' => 'Database connection is unavailable.'], 503);
+        }
+        $newStatus = ($action === 'approve_admin') ? 'active' : 'rejected';
+        try {
+            $stmt = $pdo->prepare("UPDATE `users` SET `status` = :st WHERE `id` = :id AND `role` = 'ADMIN' AND `status` = 'pending'");
+            $stmt->execute(['st' => $newStatus, 'id' => $targetId]);
+            if ($stmt->rowCount() === 0) {
+                send_json_response(['success' => false, 'error' => 'Request not found or already handled.'], 404);
+            }
+        } catch (Throwable $e) {
+            error_log("Admin request decision error: " . $e->getMessage());
+            send_json_response(['success' => false, 'error' => 'Could not update the request.'], 500);
+        }
+        send_json_response([
+            'success' => true,
+            'message' => $newStatus === 'active' ? 'Admin account approved.' : 'Admin request rejected.'
+        ]);
     }
 
     send_json_response(['success' => false, 'error' => 'Invalid action.'], 400);
