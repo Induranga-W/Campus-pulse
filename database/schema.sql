@@ -27,6 +27,7 @@ CREATE TABLE `users` (
   `email` VARCHAR(150) NOT NULL UNIQUE,
   `password` VARCHAR(255) NOT NULL,
   `role` ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+  `status` ENUM('active', 'pending', 'rejected') NOT NULL DEFAULT 'active',
   `avatar` VARCHAR(255) DEFAULT 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
   `cohort` VARCHAR(100) DEFAULT 'Batch 26.1 IFSL',
   `interests` VARCHAR(255) DEFAULT 'Events,Academic,Technology,Campus Life',
