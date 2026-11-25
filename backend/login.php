@@ -3,6 +3,9 @@
  * NSBM NewsDesk — Campus Pulse
  * backend/login.php
  * Authentication endpoint with role-based session assignment.
+ *
+ * The Student / Admin toggle on the login page is only a hint. The server checks
+ * the role and status stored in the database before it opens a session.
  */
 
 require_once __DIR__ . '/config.php';
@@ -16,6 +19,8 @@ if (!$input) {
 
 $email = trim($input['email'] ?? '');
 $password = trim($input['password'] ?? '');
+// 'student' or 'admin' from the login toggle. Old pages that send nothing skip the tab check.
+$accountType = $input['account_type'] ?? '';
 
 if (empty($email) || empty($password)) {
     send_json_response(['success' => false, 'error' => 'Please provide both email and password.'], 400);
@@ -39,29 +44,46 @@ try {
     send_json_response(['success' => false, 'error' => 'A server error occurred while signing in.'], 500);
 }
 
-if ($userFound) {
-    // Regenerate session ID on privilege elevation to prevent fixation
-    session_regenerate_id(true);
-
-    $_SESSION['user_id'] = $userFound['id'];
-    $_SESSION['name'] = $userFound['name'];
-    $_SESSION['email'] = $userFound['email'];
-    $_SESSION['role'] = $userFound['role']; // Strict 'USER' or 'ADMIN'
-    $_SESSION['avatar'] = $userFound['avatar'] ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150';
-    $_SESSION['cohort'] = $userFound['cohort'] ?? 'Batch 26.1 IFSL';
-
-    send_json_response([
-        'success' => true,
-        'message' => 'Logged in successfully.',
-        'user' => [
-            'id' => $_SESSION['user_id'],
-            'name' => $_SESSION['name'],
-            'email' => $_SESSION['email'],
-            'role' => $_SESSION['role'],
-            'avatar' => $_SESSION['avatar'],
-            'cohort' => $_SESSION['cohort']
-        ]
-    ]);
-} else {
+if (!$userFound) {
     send_json_response(['success' => false, 'error' => 'Invalid email address or password.'], 401);
 }
+
+// The password is correct from here on, so it is safe to explain what is wrong with the account.
+$status = $userFound['status'] ?? 'active';
+if ($status === 'pending') {
+    send_json_response(['success' => false, 'error' => 'Your admin account is waiting for approval from an existing administrator.'], 403);
+}
+if ($status === 'rejected') {
+    send_json_response(['success' => false, 'error' => 'Your admin request was not approved. Please contact an administrator.'], 403);
+}
+
+$isAdminAccount = ($userFound['role'] === 'ADMIN');
+if ($accountType === 'admin' && !$isAdminAccount) {
+    send_json_response(['success' => false, 'error' => 'This is a student account. Switch to the Student tab to sign in.'], 403);
+}
+if ($accountType === 'student' && $isAdminAccount) {
+    send_json_response(['success' => false, 'error' => 'This is an admin account. Switch to the Admin tab to sign in.'], 403);
+}
+
+// Regenerate session ID on privilege elevation to prevent fixation
+session_regenerate_id(true);
+
+$_SESSION['user_id'] = $userFound['id'];
+$_SESSION['name'] = $userFound['name'];
+$_SESSION['email'] = $userFound['email'];
+$_SESSION['role'] = $userFound['role']; // Strict 'USER' or 'ADMIN'
+$_SESSION['avatar'] = $userFound['avatar'] ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150';
+$_SESSION['cohort'] = $userFound['cohort'] ?? 'Batch 26.1 IFSL';
+
+send_json_response([
+    'success' => true,
+    'message' => 'Logged in successfully.',
+    'user' => [
+        'id' => $_SESSION['user_id'],
+        'name' => $_SESSION['name'],
+        'email' => $_SESSION['email'],
+        'role' => $_SESSION['role'],
+        'avatar' => $_SESSION['avatar'],
+        'cohort' => $_SESSION['cohort']
+    ]
+]);
