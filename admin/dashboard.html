@@ -122,6 +122,12 @@
             <span>📥 Student Submissions</span>
             <span class="admin-nav-badge" id="adminPendingBadge" style="background: #fef3c7; color: #b45309;">2 Pending</span>
           </button>
+
+          <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #94a3b8; padding: 12px 12px 6px;">Access Control</div>
+          <button class="admin-nav-item-btn" onclick="switchAdminTab('requests', this)">
+            <span>🛡️ Admin Requests</span>
+            <span class="admin-nav-badge" id="adminRequestsBadge">...</span>
+          </button>
         </aside>
 
         <!-- Main Tab Panes -->
@@ -281,6 +287,28 @@
 
               <div id="adminPulseCardsContainer">
                 <!-- Populated by js/admin.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. ADMIN REQUESTS PANE -->
+          <div class="admin-tab-pane" id="admin-pane-requests">
+            <div class="admin-data-panel">
+              <div class="admin-panel-title-bar">
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--dark-slate);">Admin Account Requests</h3>
+                  <p style="font-size: 0.78rem; color: var(--muted-slate); margin-top: 2px;">People who registered as administrators. They cannot sign in until you approve them.</p>
+                </div>
+              </div>
+              <div style="overflow-x: auto;">
+                <table class="admin-data-table">
+                  <thead>
+                    <tr><th>Name</th><th>Email</th><th>Department / Position</th><th>Requested</th><th>Action</th></tr>
+                  </thead>
+                  <tbody id="adminRequestsTbody">
+                    <tr><td colspan="5" style="text-align:center; color:#64748b; padding:28px;">Loading...</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -488,5 +516,6 @@
 
   <script src="../js/auth.js"></script>
   <script src="../js/admin.js"></script>
+  <script src="../js/admin-requests.js"></script>
 </body>
 </html>
