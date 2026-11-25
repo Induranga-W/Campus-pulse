@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Registration — NSBM NewsDesk | NSBM Green University</title>
+  <title>Register — NSBM NewsDesk | NSBM Green University</title>
   <meta name="description" content="Create your student account on NSBM NewsDesk to bookmark articles, join student discussions, and personalize your feed." />
 
   <!-- Google Fonts: Plus Jakarta Sans & Newsreader -->
@@ -14,6 +15,12 @@
   <link rel="stylesheet" href="./css/style.css" />
   <link rel="stylesheet" href="./css/header.css" />
   <link rel="stylesheet" href="./css/footer.css" />
+  <style>
+    .role-switch { display: flex; gap: 6px; background: #f1f5f9; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 4px; margin-bottom: 22px; }
+    .role-switch-btn { flex: 1; border: 0; background: transparent; padding: 9px 12px; border-radius: 9px; font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--muted-slate, #64748b); cursor: pointer; transition: background .15s, color .15s, box-shadow .15s; }
+    .role-switch-btn.active { background: #ffffff; color: var(--primary-accent, #059669); box-shadow: 0 1px 3px rgba(15, 23, 42, .12); }
+    .role-switch-btn:focus-visible { outline: 2px solid var(--primary-accent, #059669); outline-offset: 1px; }
+  </style>
 </head>
 <body style="display: flex; flex-direction: column; min-height: 100vh;">
 
@@ -49,25 +56,36 @@
     <div style="width: 100%; max-width: 480px; background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-md);">
       <div style="text-align: center; margin-bottom: 24px;">
         <div class="brand-logo-icon" style="margin: 0 auto 12px; width: 44px; height: 44px; font-size: 1.4rem;">N</div>
-        <h1 style="font-size: 1.4rem; font-weight: 800; color: var(--dark-slate);">Student Account Registration</h1>
-        <p style="font-size: 0.82rem; color: var(--muted-slate); margin-top: 4px;">Join the NSBM Green University digital campus community</p>
+        <h1 id="regTitle" style="font-size: 1.4rem; font-weight: 800; color: var(--dark-slate);">Student Account Registration</h1>
+        <p id="regSubtitle" style="font-size: 0.82rem; color: var(--muted-slate); margin-top: 4px;">Join the NSBM Green University digital campus community</p>
       </div>
+
+      <div class="role-switch" role="tablist" aria-label="Account type">
+        <button type="button" class="role-switch-btn active" data-type="student" role="tab" onclick="setRegisterType('student')">🎓 Student</button>
+        <button type="button" class="role-switch-btn" data-type="admin" role="tab" onclick="setRegisterType('admin')">🛡️ Admin</button>
+      </div>
+
+      <div id="adminApprovalNotice" style="display: none; background: #fffbeb; border: 1px solid #fde68a; color: #92400e; padding: 10px 14px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 18px; font-weight: 600;">
+        Admin accounts must be approved by an existing administrator before you can sign in.
+      </div>
+
+      <div id="registerSuccessMessage" style="display: none; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 10px 14px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 18px; font-weight: 600;"></div>
 
       <div id="registerErrorMessage" style="display: none; background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 10px 14px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 18px; font-weight: 600;"></div>
 
       <form id="registerForm" onsubmit="handleFormRegister(event)">
         <div class="form-group">
-          <label>Full Student Name <span class="req">*</span></label>
+          <label><span id="lblNameText">Full Student Name</span> <span class="req">*</span></label>
           <input type="text" id="regName" class="form-control" placeholder="e.g., Kasun Perera" required />
         </div>
 
         <div class="form-group">
-          <label>NSBM Student Email Address <span class="req">*</span></label>
+          <label><span id="lblEmailText">NSBM Student Email Address</span> <span class="req">*</span></label>
           <input type="email" id="regEmail" class="form-control" placeholder="e.g., kasun@students.nsbm.ac.lk" required />
         </div>
 
         <div class="form-group">
-          <label>Undergraduate Cohort / Faculty</label>
+          <label id="lblCohort">Undergraduate Cohort / Faculty</label>
           <input type="text" id="regCohort" class="form-control" value="Batch 26.1 IFSL (Faculty of Computing)" required />
         </div>
 
@@ -76,7 +94,7 @@
           <input type="password" id="regPassword" class="form-control" placeholder="At least 6 characters" minlength="6" required />
         </div>
 
-        <button type="submit" class="btn-submit-primary" style="width: 100%; margin-top: 10px;">
+        <button type="submit" id="regSubmitBtn" class="btn-submit-primary" style="width: 100%; margin-top: 10px;">
           Create Student Account
         </button>
       </form>
@@ -95,6 +113,54 @@
 
   <script src="./js/auth.js"></script>
   <script>
+    const REG_TEXT = {
+      student: {
+        title: 'Student Account Registration',
+        subtitle: 'Join the NSBM Green University digital campus community',
+        name: 'Full Student Name',
+        email: 'NSBM Student Email Address',
+        emailPh: 'e.g., kasun@students.nsbm.ac.lk',
+        cohort: 'Undergraduate Cohort / Faculty',
+        cohortPh: '',
+        button: 'Create Student Account'
+      },
+      admin: {
+        title: 'Admin Account Request',
+        subtitle: 'Request administrator access to manage NSBM NewsDesk',
+        name: 'Full Name',
+        email: 'NSBM Staff Email Address',
+        emailPh: 'e.g., rasika@nsbm.ac.lk',
+        cohort: 'Department / Position',
+        cohortPh: 'e.g., Faculty of Computing - Lecturer',
+        button: 'Request Admin Account'
+      }
+    };
+    const regSavedCohort = { student: 'Batch 26.1 IFSL (Faculty of Computing)', admin: '' };
+    let regType = 'student';
+
+    function setRegisterType(type) {
+      const cohortInput = document.getElementById('regCohort');
+      regSavedCohort[regType] = cohortInput.value;
+      regType = type === 'admin' ? 'admin' : 'student';
+      const t = REG_TEXT[regType];
+
+      document.querySelectorAll('.role-switch-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.type === regType);
+      });
+      document.getElementById('regTitle').textContent = t.title;
+      document.getElementById('regSubtitle').textContent = t.subtitle;
+      document.getElementById('lblNameText').textContent = t.name;
+      document.getElementById('lblEmailText').textContent = t.email;
+      document.getElementById('regEmail').placeholder = t.emailPh;
+      document.getElementById('lblCohort').textContent = t.cohort;
+      cohortInput.placeholder = t.cohortPh;
+      cohortInput.value = regSavedCohort[regType];
+      document.getElementById('regSubmitBtn').textContent = t.button;
+      document.getElementById('adminApprovalNotice').style.display = regType === 'admin' ? 'block' : 'none';
+      document.getElementById('registerErrorMessage').style.display = 'none';
+      document.getElementById('registerSuccessMessage').style.display = 'none';
+    }
+
     async function handleFormRegister(e) {
       e.preventDefault();
       const name = document.getElementById('regName').value.trim();
@@ -102,8 +168,10 @@
       const cohort = document.getElementById('regCohort').value.trim();
       const password = document.getElementById('regPassword').value;
       const errBox = document.getElementById('registerErrorMessage');
-      const submitButton = document.querySelector('#registerForm button[type="submit"]');
+      const okBox = document.getElementById('registerSuccessMessage');
+      const submitButton = document.getElementById('regSubmitBtn');
       errBox.style.display = 'none';
+      okBox.style.display = 'none';
       submitButton.disabled = true;
       submitButton.textContent = 'Creating account...';
 
@@ -111,12 +179,25 @@
         const res = await fetch('./backend/register.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ name, email, cohort, password }),
+          body: JSON.stringify({ account_type: regType, name, email, cohort, password }),
           credentials: 'same-origin'
         });
         const data = await res.json().catch(() => ({}));
-        if (!res.ok || !data.success || !data.user) {
+        if (!res.ok || !data.success) {
           throw new Error(data.error || 'Registration failed. Please check your details and try again.');
+        }
+
+        // Admin requests are saved as "pending": show a message instead of signing in.
+        if (data.pending) {
+          document.getElementById('registerForm').reset();
+          document.getElementById('regCohort').value = '';
+          okBox.textContent = data.message || 'Admin request sent. An existing administrator must approve your account before you can sign in.';
+          okBox.style.display = 'block';
+          return;
+        }
+
+        if (!data.user) {
+          throw new Error('Registration failed. Please check your details and try again.');
         }
         localStorage.removeItem('nsbm_session_user');
         window.location.href = './index.html';
@@ -125,8 +206,13 @@
         errBox.style.display = 'block';
       } finally {
         submitButton.disabled = false;
-        submitButton.textContent = 'Create Student Account';
+        submitButton.textContent = REG_TEXT[regType].button;
       }
+    }
+
+    // Open on the Admin tab when the link is register.html?type=admin
+    if (new URLSearchParams(window.location.search).get('type') === 'admin') {
+      setRegisterType('admin');
     }
   </script>
 </body>
