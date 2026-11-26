@@ -1,0 +1,13 @@
+# Real database credentials - never commit
+backend/config.local.php
+
+# Build output / packages
+dist/
+*.zip
+node_modules/
+
+# Secrets & OS/editor files
+.env
+.DS_Store
+Thumbs.db
+.vscode/
